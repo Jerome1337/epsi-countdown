@@ -1,10 +1,10 @@
 {
-  "name": "foundation-ssg",
+  "name": "epsi-countdown",
   "version": "1.0.0",
   "authors": [
-    "ZURB <foundation@zurb.com>"
+    "Jérôme Pogeant <p-jerome@hotmail.fr>"
   ],
-  "description": "Static site generator for Foundation for Sites.",
+  "description": "Simple countdown website",
   "main": "gulpfile.js",
   "license": "MIT",
   "ignore": [
@@ -16,7 +16,7 @@
   ],
   "dependencies": {
     "foundation-sites": "~6.2.3",
-    "motion-ui": "~1.2.2"
+    "font-awesome": "4.4.*"
   },
-  "private": true
+  "private": false
 }
