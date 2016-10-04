@@ -97,4 +97,28 @@ body {
       margin: 0 20px;
     }
   }
+
+  #footer {
+    width: 100%;
+    position: fixed;
+    bottom: 5px;
+
+    h3 {
+      color: black;
+      opacity: .4;
+      font-size: .9em;
+      font-family: 'Open Sans', sans-serif;
+      text-align: center;
+
+      a {
+        color: black;
+        text-decoration: none;
+
+        &:hover {
+          text-decoration: underline;
+          opacity: 1;
+        }
+      }
+    }
+  }
 }
