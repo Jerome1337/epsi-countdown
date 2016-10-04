@@ -6,7 +6,6 @@ import browser  from 'browser-sync';
 import gulp     from 'gulp';
 import panini   from 'panini';
 import rimraf   from 'rimraf';
-import sherpa   from 'style-sherpa';
 import yaml     from 'js-yaml';
 import fs       from 'fs';
 
@@ -17,7 +16,7 @@ const $ = plugins();
 const PRODUCTION = !!(yargs.argv.production);
 
 // Load settings from settings.yml
-const { COMPATIBILITY, PORT, UNCSS_OPTIONS, PATHS } = loadConfig();
+const { COMPATIBILITY, PORT, PATHS } = loadConfig();
 
 function loadConfig() {
   let ymlFile = fs.readFileSync('config.yml', 'utf8');
@@ -26,7 +25,7 @@ function loadConfig() {
 
 // Build the "dist" folder by running all of the below tasks
 gulp.task('build',
- gulp.series(clean, gulp.parallel(pages, sass, javascript, images, copy), styleGuide));
+ gulp.series(clean, gulp.parallel(pages, sass, javascript, images, copy, icons)));
 
 // Build the site, run the server, and watch for file changes
 gulp.task('default',
@@ -45,6 +44,13 @@ function copy() {
     .pipe(gulp.dest(PATHS.dist + '/assets'));
 }
 
+// Copy font awesome fonts to assets directory
+function icons() {
+  return gulp.src(PATHS.icons)
+      .pipe(gulp.dest(PATHS.dist + '/assets/fonts/'));
+}
+
+
 // Copy page templates into finished HTML files
 function pages() {
   return gulp.src('src/pages/**/*.{html,hbs,handlebars}')
@@ -62,14 +68,6 @@ function pages() {
 function resetPages(done) {
   panini.refresh();
   done();
-}
-
-// Generate a style guide from the Markdown content and HTML template in styleguide/
-function styleGuide(done) {
-  sherpa('src/styleguide/index.md', {
-    output: PATHS.dist + '/styleguide.html',
-    template: 'src/styleguide/template.html'
-  }, done);
 }
 
 // Compile Sass into CSS
@@ -138,5 +136,4 @@ function watch() {
   gulp.watch('src/assets/scss/**/*.scss').on('all', gulp.series(sass, browser.reload));
   gulp.watch('src/assets/js/**/*.js').on('all', gulp.series(javascript, browser.reload));
   gulp.watch('src/assets/img/**/*').on('all', gulp.series(images, browser.reload));
-  gulp.watch('src/styleguide/**').on('all', gulp.series(styleGuide, browser.reload));
 }
